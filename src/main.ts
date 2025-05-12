@@ -46,16 +46,16 @@ async function getActress(id: number): Promise<Actress | null> {
     const response = await fetch(`http://localhost:3000/actresses/${id}`);
     const data: unknown = await response.json();
     if (!isActress(data)) {
-      throw new Error("Dati recuperati, ma non corrispondono alle aspettative")
+      throw new Error("Dati recuperati, ma non corrispondono alle aspettative");
     }
     return data;
   } catch (error) {
     if (error instanceof Error) {
       console.error("Errore durante il recupero dei dati");
-      return null
+      return null;
     } else {
       console.error("Errore sconosciuto:", error);
-      return null
+      return null;
     }
   }
 }
@@ -64,8 +64,8 @@ async function getActress(id: number): Promise<Actress | null> {
 async function getAllActress(): Promise<Actress[] | []> {
   try {
     const response = await fetch("http://localhost:3000/actresses");
-    const data = await response.json();
-    if (Array.isArray(data) && data.every(actor => isActress(actor))) {
+    const data: unknown = await response.json();
+    if (Array.isArray(data) && data.every(actress => isActress(actress))) {
       return data;
     } else {
       throw new Error("I dati ricevuti non corrispondono alle aspettative");
@@ -82,14 +82,14 @@ async function getAllActress(): Promise<Actress[] | []> {
 }
 
 // 📌Milestone 5:
-async function getActresses(actressesId: number[]): Promise<(Actress | null)[]> {
+async function getActresses(actressesIds: number[]): Promise<(Actress | null)[]> {
   try {
     const actresses = await Promise.all(
-      actressesId.map(id => getActress(id))
+      actressesIds.map(id => getActress(id))
     );
     return actresses;
   } catch (error) {
-    console.error("Errore durante il recupero dei dati")
-    return []
+    console.error("Errore durante il recupero dei dati");
+    return [];
   }
 }
