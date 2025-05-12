@@ -82,3 +82,14 @@ async function getAllActress(): Promise<Actress[] | []> {
 }
 
 // 📌Milestone 5:
+async function getActresses(actressesId: number[]): Promise<(Actress | null)[]> {
+  try {
+    const actresses = await Promise.all(
+      actressesId.map(id => getActress(id))
+    );
+    return actresses;
+  } catch (error) {
+    console.error("Errore durante il recupero dei dati")
+    return []
+  }
+}
