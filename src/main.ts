@@ -1,3 +1,4 @@
+// 📌Milestone 1:
 type Person = {
   readonly id: number,
   readonly name: string,
@@ -7,6 +8,7 @@ type Person = {
   image: string
 }
 
+// 📌Milestone 2:
 type Actress = Person & {
   most_famous_movies: [string, string, string],
   awards: string,
@@ -24,6 +26,7 @@ type Actress = Person & {
   | "Chinese"
 }
 
+// 📌Milestone 3:
 function isActress(data: unknown): data is Actress {
   return (
     typeof data === "object" && data !== null && // check: data esiste ed è un oggetto.
@@ -38,10 +41,9 @@ function isActress(data: unknown): data is Actress {
     "nationality" in data && typeof data.nationality === "string" // check: nationality esiste ed è una stringa.
   )
 }
-
 async function getActress(id: number): Promise<Actress | null> {
   try {
-    const response = await fetch(`http://localhost:5000/actresses/${id}`);
+    const response = await fetch(`http://localhost:3000/actresses/${id}`);
     const data: unknown = await response.json();
     if (!isActress(data)) {
       throw new Error("Dati recuperati, ma non corrispondono alle aspettative")
@@ -57,3 +59,26 @@ async function getActress(id: number): Promise<Actress | null> {
     }
   }
 }
+
+// 📌Milestone 4:
+async function getAllActress(): Promise<Actress[] | []> {
+  try {
+    const response = await fetch("http://localhost:3000/actresses");
+    const data = await response.json();
+    if (Array.isArray(data) && data.every(actor => isActress(actor))) {
+      return data;
+    } else {
+      throw new Error("I dati ricevuti non corrispondono alle aspettative");
+    }
+  } catch (error) {
+    if (error instanceof Error) {
+      console.error("Errore durante il recupero dei dati");
+      return [];
+    } else {
+      console.error("Errore sconosciuto:", error);
+      return [];
+    }
+  }
+}
+
+// 📌Milestone 5:
